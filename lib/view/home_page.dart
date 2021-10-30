@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todoapp/model/all_constant.dart';
 import 'package:todoapp/view/more_than_ones_widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // ignore: use_key_in_widget_constructors
 class HomePage extends StatefulWidget {
@@ -10,6 +11,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference todos = FirebaseFirestore.instance.collection('todos');
   List<String> ls = ["hello"];
   String str = "";
   TextEditingController todo = TextEditingController();
@@ -18,6 +21,10 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     setState(() {
       ls.add(str);
+      todos
+          .add({"todo": str, "status": false})
+          .then((value) => print("User Added"))
+          .catchError((error) => print("Failed to add user: $error"));
     });
   }
 
@@ -35,10 +42,15 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  "To Do App",
-                  style: GoogleFonts.getFont('Sen',
-                      fontSize: 45, color: Colors.black),
+                GestureDetector(
+                  onTap: () {
+                    editToDo(context);
+                  },
+                  child: Text(
+                    "To Do App",
+                    style: GoogleFonts.getFont('Sen',
+                        fontSize: 45, color: Colors.black),
+                  ),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.035,

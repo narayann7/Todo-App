@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:todoapp/model/all_constant.dart';
 
@@ -30,7 +29,11 @@ Widget newToDo(BuildContext context, String text) {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(text),
+              Expanded(
+                  child: Text(
+                text,
+                maxLines: 1,
+              )),
               Row(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
@@ -52,5 +55,33 @@ Widget newToDo(BuildContext context, String text) {
         ),
       ),
     ),
+  );
+}
+
+editToDo(BuildContext context) {
+  Widget okButton = TextButton(
+    child: Text("Ok"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+  Widget cancleButton = TextButton(
+    child: Text("Cancel"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
+  AlertDialog alert = AlertDialog(
+    title: Text("edit ToDo"),
+    content: TextField(),
+    actions: [okButton, cancleButton],
+  );
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
   );
 }
