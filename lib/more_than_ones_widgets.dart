@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:todoapp/model/all_constant.dart';
+import 'package:todoapp/all_constant.dart';
 
-Widget newToDo(BuildContext context, String text) {
+Widget newToDo(BuildContext context, String text, bool check, Key key) {
   return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8.5),
+    padding: const EdgeInsets.only(left: 25, right: 25, top: 8.5, bottom: 8.5),
     child: Container(
       height: MediaQuery.of(context).size.height * 0.07,
       width: MediaQuery.of(context).size.width * 0.85,
@@ -19,9 +19,9 @@ Widget newToDo(BuildContext context, String text) {
                 offset: Offset(1, 4)),
           ]),
       child: ListTile(
-        leading: Icon(
-          Icons.check_circle_outline,
-          color: black,
+        key: key,
+        leading: Container(
+          width: 10,
         ),
         title: SizedBox(
           width: MediaQuery.of(context).size.width * 0.65,
