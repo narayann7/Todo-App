@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/model/all_constant.dart';
 
-Widget newToDo(BuildContext context) {
+Widget newToDo(BuildContext context, String text) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.5),
     child: Container(
@@ -30,7 +30,7 @@ Widget newToDo(BuildContext context) {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("new todo you can edit too"),
+              Text(text),
               Row(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [

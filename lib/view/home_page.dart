@@ -3,14 +3,24 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:todoapp/model/all_constant.dart';
 import 'package:todoapp/view/more_than_ones_widgets.dart';
 
+// ignore: use_key_in_widget_constructors
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
-
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  List<String> ls = ["hello"];
+  String str = "";
+  TextEditingController todo = TextEditingController();
+  @override
+  // ignore: must_call_super
+  void initState() {
+    setState(() {
+      ls.add(str);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +49,14 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       height: MediaQuery.of(context).size.height * 0.053,
                       width: MediaQuery.of(context).size.width * 0.70,
-                      child: const TextField(
+                      child: TextField(
+                        controller: todo,
+                        onChanged: (s) {
+                          str = s;
+                        },
+
+                        cursorColor: black,
+                        // ignore: prefer_const_constructors
                         decoration: InputDecoration(
                           border: InputBorder.none,
                         ),
@@ -58,23 +75,28 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.035,
                     ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.053,
-                      width: MediaQuery.of(context).size.width * 0.11,
-                      child: Icon(
-                        Icons.add,
-                        color: background,
+                    GestureDetector(
+                      onTap: () {
+                        initState();
+                      },
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.053,
+                        width: MediaQuery.of(context).size.width * 0.11,
+                        child: Icon(
+                          Icons.add,
+                          color: background,
+                        ),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: black,
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 4.0,
+                                  spreadRadius: 1,
+                                  offset: Offset(1, 5)),
+                            ]),
                       ),
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: black,
-                          boxShadow: const [
-                            BoxShadow(
-                                color: Colors.grey,
-                                blurRadius: 4.0,
-                                spreadRadius: 1,
-                                offset: Offset(1, 5)),
-                          ]),
                     ),
                   ],
                 ),
@@ -93,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                   parent: AlwaysScrollableScrollPhysics()),
               child: Column(
                 children: [
-                  for (int i = 0; i < 10; i++) newToDo(context),
+                  for (int i = 0; i < ls.length; i++) newToDo(context, ls[i]),
                 ],
               ),
             ),
