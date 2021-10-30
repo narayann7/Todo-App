@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:todoapp/all_constant.dart';
+import 'package:todoapp/model/all_constant.dart';
+import 'package:todoapp/view/more_than_ones_widgets.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -88,7 +89,13 @@ class _HomePageState extends State<HomePage> {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(color: background),
             child: SingleChildScrollView(
-              child: Column(),
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
+              child: Column(
+                children: [
+                  for (int i = 0; i < 10; i++) newToDo(context),
+                ],
+              ),
             ),
           )
         ],
