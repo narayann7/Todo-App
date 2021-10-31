@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todoapp/all_constant.dart';
 
-Widget newToDo(BuildContext context, String todo, bool check,
-    DocumentSnapshot documentSnapshot) {
+Widget newToDo(BuildContext context, String todo, bool? check,
+    DocumentSnapshot documentSnapshot, Key key) {
+  CollectionReference todos = FirebaseFirestore.instance.collection('todos');
+
   return Padding(
     padding: const EdgeInsets.only(left: 25, right: 25, top: 8.5, bottom: 8.5),
     child: Container(
