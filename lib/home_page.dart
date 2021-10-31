@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todoapp/all_constant.dart';
@@ -13,10 +15,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference todos = FirebaseFirestore.instance.collection('todos');
+  CollectionReference todos =
+      FirebaseFirestore.instance.collection('todoscollection');
   String str = "";
-  DateTime time = DateTime.now();
   bool status = false;
+  late int index_id = 0;
   late String id;
   TextEditingController todo = TextEditingController();
   @override
@@ -24,7 +27,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     setState(() {
       if (str != "") {
-        todos.add({"todo": str, "status": false, "time": time});
+        index_id += index_id;
+        todos.add({"todo": str, "status": false, "index": index_id});
         todo.text = "";
         str = "";
       }
@@ -129,7 +133,10 @@ class _HomePageState extends State<HomePage> {
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(color: background),
               child: StreamBuilder<QuerySnapshot>(
-                stream: firestore.collection('todos').snapshots(),
+                stream: firestore
+                    .collection('todoscollection')
+                    .orderBy('index', descending: false)
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(
@@ -145,6 +152,7 @@ class _HomePageState extends State<HomePage> {
                               child: Text("add todo", style: style),
                             );
                           } else {
+                            index_id = max(index_id, documentSnapshot['index']);
                             return Padding(
                               padding: const EdgeInsets.only(
                                   left: 25, right: 25, top: 8.5, bottom: 8.5),
