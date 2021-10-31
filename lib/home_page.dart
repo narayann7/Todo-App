@@ -21,11 +21,7 @@ class _HomePageState extends State<HomePage> {
   // ignore: must_call_super
   void initState() {
     setState(() {
-      print(time);
-      todos
-          .add({"todo": str, "status": false, "time": time})
-          .then((value) => print("note Added"))
-          .catchError((error) => print("Failed"));
+      todos.add({"todo": str, "status": false, "time": time});
     });
   }
 
@@ -45,7 +41,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    editToDo(context);
+                    // editToDo(context);
                   },
                   child: Text(
                     "To Do App",
@@ -132,12 +128,14 @@ class _HomePageState extends State<HomePage> {
                           parent: AlwaysScrollableScrollPhysics()),
                       itemCount: snapshot.data!.size,
                       itemBuilder: (BuildContext context, int index) {
-                        DocumentSnapshot ds = snapshot.data!.docs[index];
-                        Key k = Key(index.toString());
-                        bool check = true;
+                        DocumentSnapshot documentSnapshot =
+                            snapshot.data!.docs[index];
+                        // Key k = Key(index.toString());
+                        // bool check = true;
                         return Stack(
                           children: [
-                            newToDo(context, ds['todo'], true, k),
+                            newToDo(context, documentSnapshot['todo'], true,
+                                documentSnapshot),
                           ],
                         );
                       });

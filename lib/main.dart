@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:todoapp/all_constant.dart';
 import 'package:todoapp/home_page.dart';
 
 void main() async {
@@ -13,7 +14,12 @@ class MyTodoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = ThemeData();
     return MaterialApp(
+      theme: ThemeData(
+        colorScheme: theme.colorScheme.copyWith(
+            primaryVariant: black, secondary: black, onPrimary: black),
+      ),
       home: HomePage(),
     );
   }
