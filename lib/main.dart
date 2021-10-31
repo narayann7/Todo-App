@@ -14,12 +14,7 @@ class MyTodoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = ThemeData();
     return MaterialApp(
-      theme: ThemeData(
-        colorScheme: theme.colorScheme.copyWith(
-            primaryVariant: black, secondary: black, onPrimary: black),
-      ),
       home: HomePage(),
     );
   }

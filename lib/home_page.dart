@@ -21,135 +21,140 @@ class _HomePageState extends State<HomePage> {
   // ignore: must_call_super
   void initState() {
     setState(() {
-      todos.add({"todo": str, "status": false, "time": time});
+      if (str != "") todos.add({"todo": str, "status": false, "time": time});
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: background,
-      body: Column(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.30,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(color: background),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    // editToDo(context);
-                  },
-                  child: Text(
-                    "To Do App",
-                    style: GoogleFonts.getFont('Sen',
-                        fontSize: 45, color: Colors.black),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: background,
+        body: Column(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height * 0.30,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(color: background),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  text("To Do App", 45),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.035,
                   ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.035,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.053,
-                      width: MediaQuery.of(context).size.width * 0.70,
-                      child: TextField(
-                        controller: todo,
-                        onChanged: (s) {
-                          str = s;
-                        },
-
-                        cursorColor: black,
-                        // ignore: prefer_const_constructors
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                          color: white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: const [
-                            BoxShadow(
-                                color: Colors.grey,
-                                blurRadius: 4.0,
-                                spreadRadius: 1.5,
-                                offset: Offset(1, 5)),
-                          ]),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.035,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        initState();
-                      },
-                      child: Container(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
                         height: MediaQuery.of(context).size.height * 0.053,
-                        width: MediaQuery.of(context).size.width * 0.11,
-                        child: Icon(
-                          Icons.add,
-                          color: background,
+                        width: MediaQuery.of(context).size.width * 0.70,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: TextField(
+                            controller: todo,
+                            onChanged: (s) {
+                              str = s;
+                            },
+
+                            style: style,
+                            cursorColor: black,
+                            // ignore: prefer_const_constructors
+                            decoration: InputDecoration(
+                              hintText: "type something here...",
+                              hintStyle: GoogleFonts.getFont('Sen',
+                                  color: Colors.grey[600]),
+                              border: InputBorder.none,
+                            ),
+                          ),
                         ),
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: black,
+                            color: white,
+                            borderRadius: BorderRadius.circular(12),
                             boxShadow: const [
                               BoxShadow(
                                   color: Colors.grey,
                                   blurRadius: 4.0,
-                                  spreadRadius: 1,
+                                  spreadRadius: 1.5,
                                   offset: Offset(1, 5)),
                             ]),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                )
-              ],
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.035,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          initState();
+                        },
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.053,
+                          width: MediaQuery.of(context).size.width * 0.11,
+                          child: Icon(
+                            Icons.add,
+                            color: background,
+                          ),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: black,
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.grey,
+                                    blurRadius: 4.0,
+                                    spreadRadius: 1,
+                                    offset: Offset(1, 5)),
+                              ]),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  )
+                ],
+              ),
             ),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.70,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(color: background),
-            child: StreamBuilder<QuerySnapshot>(
-              stream: firestore.collection('todos').snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                      physics: const BouncingScrollPhysics(
-                          parent: AlwaysScrollableScrollPhysics()),
-                      itemCount: snapshot.data!.size,
-                      itemBuilder: (BuildContext context, int index) {
-                        DocumentSnapshot documentSnapshot =
-                            snapshot.data!.docs[index];
-                        // Key k = Key(index.toString());
-                        // bool check = true;
-                        return Stack(
-                          children: [
-                            newToDo(context, documentSnapshot['todo'], true,
-                                documentSnapshot),
-                          ],
-                        );
-                      });
-                } else {
-                  return Center(
-                      child: Text(
-                    "add todo",
-                    style: GoogleFonts.getFont('Sen', color: black),
-                  ));
-                }
-              },
-            ),
-          )
-        ],
+            Container(
+              height: MediaQuery.of(context).size.height * 0.70,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(color: background),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: firestore.collection('todos').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                        physics: const BouncingScrollPhysics(
+                            parent: AlwaysScrollableScrollPhysics()),
+                        itemCount: snapshot.data!.size,
+                        itemBuilder: (BuildContext context, int index) {
+                          DocumentSnapshot documentSnapshot =
+                              snapshot.data!.docs[index];
+                          // Key k = Key(index.toString());
+                          // bool check = true;
+                          if (snapshot.data!.size == 0) {
+                            return Center(
+                              child: Text("add todo", style: style),
+                            );
+                          } else {
+                            return Stack(
+                              children: [
+                                newToDo(context, documentSnapshot['todo'], true,
+                                    documentSnapshot),
+                              ],
+                            );
+                          }
+                        });
+                  } else {
+                    return Center(
+                      child: Text("add todo", style: style),
+                    );
+                  }
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

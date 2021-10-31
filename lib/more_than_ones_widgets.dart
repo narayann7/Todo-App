@@ -6,8 +6,6 @@ import 'package:todoapp/all_constant.dart';
 
 Widget newToDo(BuildContext context, String todo, bool check,
     DocumentSnapshot documentSnapshot) {
-  CollectionReference todos = FirebaseFirestore.instance.collection('todos');
-
   return Padding(
     padding: const EdgeInsets.only(left: 25, right: 25, top: 8.5, bottom: 8.5),
     child: Container(
@@ -36,30 +34,30 @@ Widget newToDo(BuildContext context, String todo, bool check,
               Expanded(
                   child: Text(
                 todo,
+                style: style,
                 maxLines: 1,
               )),
               Row(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      editToDo(context, documentSnapshot);
-                    },
-                    child: Icon(
-                      Icons.edit_location_alt_rounded,
-                      color: black,
-                    ),
-                  ),
+                      onTap: () {
+                        editToDo(context, documentSnapshot);
+                      },
+                      child: Image(
+                        image: AssetImage("images/edit.png"),
+                        height: 20,
+                      )),
                   SizedBox(
                     width: 10,
                   ),
                   GestureDetector(
                     onTap: () {
-                      todos.doc(documentSnapshot.id).delete();
+                      deleteToDo(context, documentSnapshot);
                     },
-                    child: Icon(
-                      Icons.delete_forever_rounded,
-                      color: black,
+                    child: Image(
+                      image: AssetImage("images/Trash.png"),
+                      height: 27,
                     ),
                   ),
                 ],
@@ -79,7 +77,7 @@ editToDo(BuildContext context, DocumentSnapshot documentSnapshot) {
   DateTime time = DateTime.now();
 
   Widget okButton = TextButton(
-    child: Text("Ok"),
+    child: text("Ok", 15),
     onPressed: () {
       todos
           .doc(documentSnapshot.id)
@@ -88,7 +86,7 @@ editToDo(BuildContext context, DocumentSnapshot documentSnapshot) {
     },
   );
   Widget cancleButton = TextButton(
-    child: Text("Cancel"),
+    child: text("Cancel", 15),
     onPressed: () {
       Navigator.pop(context);
     },
@@ -98,15 +96,52 @@ editToDo(BuildContext context, DocumentSnapshot documentSnapshot) {
     backgroundColor: background,
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(12.0))),
-    title: Text(
-      "edit todo",
-      style: GoogleFonts.getFont('Sen'),
-    ),
+    title: text("edit todo", 25),
     content: TextField(
       controller: editToDo,
       cursorColor: black,
       decoration: InputDecoration(disabledBorder: InputBorder.none),
     ),
+    actions: [okButton, cancleButton],
+  );
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+text(String content, double size) {
+  return Text(
+    content,
+    style: GoogleFonts.getFont('Sen', fontSize: size, color: black),
+  );
+}
+
+deleteToDo(BuildContext context, DocumentSnapshot documentSnapshot) {
+  CollectionReference todos = FirebaseFirestore.instance.collection('todos');
+
+  Widget okButton = TextButton(
+    child: text("Ok", 15),
+    onPressed: () {
+      todos.doc(documentSnapshot.id).delete();
+      Navigator.pop(context);
+    },
+  );
+  Widget cancleButton = TextButton(
+    child: text("Cancel", 15),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
+  AlertDialog alert = AlertDialog(
+    backgroundColor: background,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12.0))),
+    title: text("you want delete this todo ?", 20),
     actions: [okButton, cancleButton],
   );
 
