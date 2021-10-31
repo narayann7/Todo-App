@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     setState(() {
       if (str != "") {
-        index_id += index_id;
+        index_id = index_id + 1;
         todos.add({"todo": str, "status": false, "index": index_id});
         todo.text = "";
         str = "";
@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                                   left: 25, right: 25, top: 8.5, bottom: 8.5),
                               child: Container(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.07,
+                                    MediaQuery.of(context).size.height * 0.075,
                                 width: MediaQuery.of(context).size.width * 0.85,
                                 decoration: BoxDecoration(
                                     color: white,
@@ -170,63 +170,66 @@ class _HomePageState extends State<HomePage> {
                                           spreadRadius: 1.5,
                                           offset: Offset(1, 4)),
                                     ]),
-                                child: ListTile(
-                                  leading: Checkbox(
-                                    activeColor: black,
-                                    value: documentSnapshot['status'],
-                                    onChanged: (ch) {
-                                      id = documentSnapshot.id;
-                                      status =
-                                          documentSnapshot['status'] == true
-                                              ? false
-                                              : true;
-                                      initState();
-                                    },
-                                  ),
-                                  title: SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.65,
-                                    // color: Colors.amber,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                            child: Text(
-                                          documentSnapshot['todo'],
-                                          style: style,
-                                          maxLines: 1,
-                                        )),
-                                        Row(
-                                          // ignore: prefer_const_literals_to_create_immutables
-                                          children: [
-                                            GestureDetector(
+                                child: Center(
+                                  child: ListTile(
+                                    leading: Checkbox(
+                                      activeColor: black,
+                                      value: documentSnapshot['status'],
+                                      onChanged: (ch) {
+                                        id = documentSnapshot.id;
+                                        status =
+                                            documentSnapshot['status'] == true
+                                                ? false
+                                                : true;
+                                        initState();
+                                      },
+                                    ),
+                                    title: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.65,
+                                      // color: Colors.amber,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                              child: Text(
+                                            documentSnapshot['todo'],
+                                            style: GoogleFonts.getFont('Sen',
+                                                color: black, fontSize: 20),
+                                            maxLines: 1,
+                                          )),
+                                          Row(
+                                            // ignore: prefer_const_literals_to_create_immutables
+                                            children: [
+                                              GestureDetector(
+                                                  onTap: () {
+                                                    editToDo(context,
+                                                        documentSnapshot);
+                                                  },
+                                                  child: Image(
+                                                    image: AssetImage(
+                                                        "images/edit.png"),
+                                                    height: 23,
+                                                  )),
+                                              SizedBox(
+                                                width: 15,
+                                              ),
+                                              GestureDetector(
                                                 onTap: () {
-                                                  editToDo(context,
+                                                  deleteToDo(context,
                                                       documentSnapshot);
                                                 },
                                                 child: Image(
                                                   image: AssetImage(
-                                                      "images/edit.png"),
-                                                  height: 20,
-                                                )),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                deleteToDo(
-                                                    context, documentSnapshot);
-                                              },
-                                              child: Image(
-                                                image: AssetImage(
-                                                    "images/Trash.png"),
-                                                height: 27,
+                                                      "images/Trash.png"),
+                                                  height: 29,
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
+                                            ],
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
