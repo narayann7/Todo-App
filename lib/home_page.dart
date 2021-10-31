@@ -64,8 +64,8 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.053,
-                        width: MediaQuery.of(context).size.width * 0.70,
+                        height: MediaQuery.of(context).size.height * 0.056,
+                        width: MediaQuery.of(context).size.width * 0.71,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 15),
                           child: TextField(
